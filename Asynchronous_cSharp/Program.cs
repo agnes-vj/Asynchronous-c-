@@ -6,8 +6,7 @@ namespace Asynchronous_cSharp
     {
         static async Task Main(string[] args)
         {    
-            string story = "Mary had a little lamb, its fleece was white as snow.";
-            await Exercises.printWord(story).ContinueWith(await Exercises.findFactorialOfNumbers());
+           await Exercises.findFactorialOfNumbers();
 
 
              //await mainTasks();
