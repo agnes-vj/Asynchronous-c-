@@ -5,17 +5,21 @@ namespace Asynchronous_cSharp
     internal class Program
     {
         static async Task Main(string[] args)
-        {
-             //await mainTasks();
-           
+        {    
+            string story = "Mary had a little lamb, its fleece was white as snow.";
+            await Exercises.printWord(story).ContinueWith(await Exercises.findFactorialOfNumbers());
 
-                
-                await sayHelloWorld();
-            
-           
+
+             //await mainTasks();
+
+
+
+            // await sayHelloWorld();
+
+
             //Task t = sayHelloWorld();
             //t.Wait();
-           // await t;
+            // await t;
             //Task.Run(async () => await sayHelloWorld()).Wait(6000);
 
             //Task.Delay(3000);
@@ -31,30 +35,30 @@ namespace Asynchronous_cSharp
             }
         static async Task sayHelloWorld()
         {
-
-            var tokenSource = new CancellationTokenSource();
+            var tokenSource = new CancellationTokenSource(3000);
             var token = tokenSource.Token;
-            Random random = new Random();
+           
             Stopwatch stopwatch = Stopwatch.StartNew();
             stopwatch.Start();
+
             var sayHello = Task.Run(async () =>
             {
                 if (token.IsCancellationRequested)
                     throw new Exception();
-                await Task.Delay(2000,token);
+                await Task.Delay(5000,token);
                 Console.WriteLine("Hello ");
             },token);
             var sayWorld = Task.Run(async () =>
             {
                 if (token.IsCancellationRequested)
                     throw new Exception();
-                await Task.Delay(2000,token);
+                await Task.Delay(1000,token);
                 Console.WriteLine("World");
             },token);
 
             try
             {
-                tokenSource.CancelAfter(100);
+                //tokenSource.CancelAfter(100);
                 await Task.WhenAll([sayHello, sayWorld]);
             }
             catch
