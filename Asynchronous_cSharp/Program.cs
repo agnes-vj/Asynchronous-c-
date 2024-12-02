@@ -10,15 +10,15 @@ namespace Asynchronous_cSharp
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
 
-            try
-            {
+            //try
+            //{
                 tokenSource.CancelAfter(1000);
                 await Task.WhenAll([sayHelloWorld(token)]);
-            }
-            catch
-            {
-                Console.WriteLine("operation timed out");
-            }
+            //}
+            //catch
+            //{
+            //    Console.WriteLine("operation timed out");
+            //}
            
             //Task t = sayHelloWorld();
             //t.Wait();
