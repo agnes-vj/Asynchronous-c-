@@ -7,18 +7,11 @@ namespace Asynchronous_cSharp
         static async Task Main(string[] args)
         {
              //await mainTasks();
-            var tokenSource = new CancellationTokenSource();
-            var token = tokenSource.Token;
+           
 
-            //try
-            //{
-                tokenSource.CancelAfter(1000);
-                await Task.WhenAll([sayHelloWorld(token)]);
-            //}
-            //catch
-            //{
-            //    Console.WriteLine("operation timed out");
-            //}
+                
+                await sayHelloWorld();
+            
            
             //Task t = sayHelloWorld();
             //t.Wait();
@@ -36,40 +29,42 @@ namespace Asynchronous_cSharp
                 Console.WriteLine("Hello, World!");
           
             }
-        static async Task sayHelloWorld(CancellationToken token)
+        static async Task sayHelloWorld()
         {
-         
+
+            var tokenSource = new CancellationTokenSource();
+            var token = tokenSource.Token;
             Random random = new Random();
             Stopwatch stopwatch = Stopwatch.StartNew();
             stopwatch.Start();
             var sayHello = Task.Run(async () =>
             {
                 if (token.IsCancellationRequested)
-                    token.ThrowIfCancellationRequested();
-                await Task.Delay(random.Next(1, 10001));
+                    throw new Exception();
+                await Task.Delay(2000,token);
                 Console.WriteLine("Hello ");
             },token);
             var sayWorld = Task.Run(async () =>
             {
                 if (token.IsCancellationRequested)
-                    token.ThrowIfCancellationRequested();
-                await Task.Delay(random.Next(1,10001));
+                    throw new Exception();
+                await Task.Delay(2000,token);
                 Console.WriteLine("World");
             },token);
 
             try
             {
+                tokenSource.CancelAfter(100);
                 await Task.WhenAll([sayHello, sayWorld]);
-                token.ThrowIfCancellationRequested();
             }
             catch
             {
                 Console.WriteLine("timed out");
                 stopwatch.Stop();
+                Console.WriteLine("Time taken : "+ stopwatch.ElapsedMilliseconds);
             }
 
             
-            Console.WriteLine("Time taken : "+ stopwatch.ElapsedMilliseconds);
 
         }
     }
