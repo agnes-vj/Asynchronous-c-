@@ -2,9 +2,23 @@
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+           
+               await mainTasks();
+
         }
+            static async Task mainTasks()
+            {
+                await Task.Delay(2000);
+                Console.WriteLine("Hello, World!");
+                await Task.Delay(2000);
+                Console.WriteLine("Hello, World!");
+          
+            }
+
+                //await Task.WhenAll([printToConsole,printToConsole2]);
     }
 }
+
+
