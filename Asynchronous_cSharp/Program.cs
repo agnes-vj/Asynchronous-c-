@@ -6,14 +6,15 @@ namespace Asynchronous_cSharp
     {
         static async Task Main(string[] args)
         {    
-           await Exercises.findFactorialOfNumbers();
+           //await Exercises.findFactorialOfNumbers();
 
 
              //await mainTasks();
 
 
 
-            // await sayHelloWorld();
+            await sayHelloWorld();
+            await Task.Delay(5000);
 
 
             //Task t = sayHelloWorld();
@@ -34,6 +35,31 @@ namespace Asynchronous_cSharp
             }
         static async Task sayHelloWorld()
         {
+
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            stopwatch.Start();
+
+            var sayHello = Task.Run(async () =>
+            {
+                await Task.Delay(4000);
+                Console.WriteLine("Hello ");
+            });
+            var sayWorld = Task.Run(async () =>
+            {
+                await Task.Delay(1000);
+                Console.WriteLine("World");
+            });
+
+            
+               // await Task.WhenAll([sayHello, sayWorld]);
+           
+                stopwatch.Stop();
+                Console.WriteLine("Time taken : " + stopwatch.ElapsedMilliseconds);
+            
+        }
+            static async Task sayHelloWorldWithToken()
+        {
             var tokenSource = new CancellationTokenSource(3000);
             var token = tokenSource.Token;
            
@@ -41,16 +67,12 @@ namespace Asynchronous_cSharp
             stopwatch.Start();
 
             var sayHello = Task.Run(async () =>
-            {
-                if (token.IsCancellationRequested)
-                    throw new Exception();
+            {                
                 await Task.Delay(5000,token);
                 Console.WriteLine("Hello ");
             },token);
             var sayWorld = Task.Run(async () =>
-            {
-                if (token.IsCancellationRequested)
-                    throw new Exception();
+            {                
                 await Task.Delay(1000,token);
                 Console.WriteLine("World");
             },token);
